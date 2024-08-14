@@ -18,8 +18,8 @@ def dashes(placeholder, chosen_word):
 
 
 # display hint
-placeholder = dashes(placeholder, chosen_word)
-print(f"Hint: {placeholder}")
+#placeholder = dashes(placeholder, chosen_word)
+
 
 
 # check each char against guess and return the letter if correct
@@ -30,15 +30,21 @@ def user_input():
     guess = input("Guess a letter: ").lower()
     return guess
 
-
+display = ""
 # game logic
-def letter_check(guess, chosen_word):
-    if guess in chosen_word:
-        print("Match found!")
-        return letter_match(guess, chosen_word)
+def letter_check(display, guess, chosen_word):
+    new_display = "" # reset display to start fresh
+    for index in range(len(chosen_word)):
+        if guess == chosen_word[index]: # check through every char
+            #print("Match found!")
+            new_display += guess    # add correct guess to display
+            #print(f"new display: {new_display}")
+        else:
+            new_display += display[index] #retain char and populate rest with _
 
-    else:
-        print("Wrong")
+    return new_display
+
+
 
 def letter_match(guess, chosen_word):
     display = ""
@@ -55,11 +61,26 @@ def letter_match(guess, chosen_word):
 # loops through to check if all dashes have been cleared by repeatedly getting user input
 # and then checking that input
 def game_loop(display, chosen_word):
-    while "_" in display:
-        print(f"Current state: {display}")
+    while display != chosen_word:
+        print(f"Current guesses: {display}")
         guess = user_input()
-        display = letter_check(guess, chosen_word)
+        display = letter_check(display, guess, chosen_word)
+        #print(f"curent display: {display}")
+        if display == chosen_word:
+            print(f"Congratulation you solved it! The word is: {display}")
+        if guess not in display:
+            print(f"Wrong guess!")
+        else:
+            print("Thats a match!")
     return display
 
-display = dashes(placeholder, chosen_word)
+
+display = dashes("", chosen_word)
+print(f"Hint: {display}")
 final_display = game_loop(display, chosen_word)
+
+
+
+
+
+

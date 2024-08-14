@@ -6,31 +6,22 @@ word_list = ["aardvark", "baboon", "camel"]
 chosen_word = random.choice(word_list)
 print(chosen_word)
 
-# declare empty string
-placeholder = ""
-
 
 # function for display word in hashes for hint
-def dashes(placeholder, chosen_word):
-    for char in range(len(chosen_word)):
-        placeholder += "_"
-    return (placeholder)
-
-
-# display hint
-#placeholder = dashes(placeholder, chosen_word)
+def dashes(chosen_word):
+    return "_" * len(chosen_word)
 
 
 
-# check each char against guess and return the letter if correct
-
-guess = ""
 # get user guess
 def user_input():
-    guess = input("Guess a letter: ").lower()
-    return guess
+    while True:
+        guess = input("Guess a letter: ").lower()
+        if guess.isalpha() and len(guess) == 1:
+            return guess
+        else:
+            print("Invalid input. Please enter a single letter")
 
-display = ""
 # game logic
 def letter_check(display, guess, chosen_word):
     new_display = "" # reset display to start fresh
@@ -45,42 +36,22 @@ def letter_check(display, guess, chosen_word):
     return new_display
 
 
-
-def letter_match(guess, chosen_word):
-    display = ""
-    for char in chosen_word:
-        if guess == char:
-            display += guess
-        else:
-            display += "_"
-    return (display)
-
-# call game check function and assign to display
-#display = letter_check(guess)
-
-# loops through to check if all dashes have been cleared by repeatedly getting user input
-# and then checking that input
+# game loop to handle multiple guesses
 def game_loop(display, chosen_word):
     while display != chosen_word:
         print(f"Current guesses: {display}")
         guess = user_input()
         display = letter_check(display, guess, chosen_word)
-        #print(f"curent display: {display}")
-        if display == chosen_word:
-            print(f"Congratulation you solved it! The word is: {display}")
+
         if guess not in display:
             print(f"Wrong guess!")
-        else:
+        elif guess in display:
             print("Thats a match!")
+            if display == chosen_word:
+                print(f"Congratulation you solved it! The word is: {display}")
     return display
 
 
-display = dashes("", chosen_word)
+display = dashes(chosen_word)
 print(f"Hint: {display}")
-final_display = game_loop(display, chosen_word)
-
-
-
-
-
-
+game_loop(display, chosen_word)

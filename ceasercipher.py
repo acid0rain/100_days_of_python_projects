@@ -11,9 +11,12 @@ def encrypt(original_text, shift_amount):
     cipher_text = ""
 
     for letter in original_text:
-        shifted_position = alphabet.index(letter) + shift_amount
-        shifted_position %= len(alphabet)
-        cipher_text += alphabet[shifted_position]
+        if letter not in alphabet:
+            cipher_text += letter
+        else:
+            shifted_position = alphabet.index(letter) + shift_amount
+            shifted_position %= len(alphabet)
+            cipher_text += alphabet[shifted_position]
     print(f"Here is the encoded result: {cipher_text}")
 
 
@@ -39,6 +42,10 @@ def ceaser_cipher():
         decrypt(original_text=text, shift_amount=shift)
     else:
         print("Error")
+
+    repeat = input(f"Would you like to go again? Yes or No?   ").lower()
+    if repeat == "yes":
+        ceaser_cipher()
 
 ceaser_cipher()
 

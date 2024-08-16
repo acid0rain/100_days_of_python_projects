@@ -7,45 +7,41 @@ alphabet = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n'
 # TODO-3: Combine the 'encrypt()' and 'decrypt()' functions into one function called 'caesar()'.
 #  Use the value of the user chosen 'direction' variable to determine which functionality to use.
 
-def encrypt(original_text, shift_amount):
-    cipher_text = ""
 
-    for letter in original_text:
-        if letter not in alphabet:
-            cipher_text += letter
+def ceaser_cipher(original_text, shift, direction):
+    cipher_text = "" #empty to store results
+
+    for letter in original_text: # iterate through each char
+        if letter in alphabet:
+            shift_amount = shift if direction == "encode" else -shift #forwards or backwards
+            shift_position = (alphabet.index(letter) + shift_amount) % len(alphabet) #move alphabet index by shift and workout remainder
+            cipher_text += alphabet[shift_position] #populate with new letters
         else:
-            shifted_position = alphabet.index(letter) + shift_amount
-            shifted_position %= len(alphabet)
-            cipher_text += alphabet[shifted_position]
-    print(f"Here is the encoded result: {cipher_text}")
+            cipher_text += letter #retain non letters
+
+    return cipher_text
 
 
-def decrypt(original_text, shift_amount):
-    decrypted_text = ""
+def main():
+    while True:
+        direction = input("Type 'encode' to encrypt, type 'decode' to decrypt:\n").lower()
+        if direction not in ["encode", "decode"]:
+            print("Invalid direction. Please type encode or decode.")
+            continue
 
-    for letter in original_text:
-        shifted_position = alphabet.index(letter) - shift_amount
-        shifted_position %= len(alphabet)
-        decrypted_text += alphabet[shifted_position]
-    print(f"Here is your decrypted result: {decrypted_text}")
+        text = input("Type your message:\n").lower()
+        try:
+            shift = int(input("Type the shift number:\n")) # force int
+        except ValueError:
+            print("Invalid shift. Please enter a number")
+            continue
 
+        result = ceaser_cipher(text, shift, direction)
+        print(f"Here is your {direction} result: {result}")
 
-def ceaser_cipher():
-    repeat = False
-    direction = input("Type 'encode' to encrypt, type 'decode' to decrypt:\n").lower()
-    text = input("Type your message:\n").lower()
-    shift = int(input("Type the shift number:\n"))
+        repeat = input(f"Would you like to go again? Yes or No?   ").lower()
+        if repeat != "yes":
+            break
 
-    if direction == "encode":
-        encrypt(original_text=text, shift_amount=shift)
-    elif direction == "decode":
-        decrypt(original_text=text, shift_amount=shift)
-    else:
-        print("Error")
-
-    repeat = input(f"Would you like to go again? Yes or No?   ").lower()
-    if repeat == "yes":
-        ceaser_cipher()
-
-ceaser_cipher()
+main()
 

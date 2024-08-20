@@ -21,7 +21,7 @@ while more_bidders:
         more_bidders = False
         break
     elif "yes":
-        print("\n" * 100)
+        print("\n" * 100) # clear screen
 
 print(auction_bids)
 
